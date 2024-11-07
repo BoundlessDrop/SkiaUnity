@@ -28,7 +28,7 @@ Benefits of SVG.Skia:
 - **HarfBuzz support:** The integration of HarfBuzz enhances text rendering in SkiaSharp, offering benefits such as native fonts, emoji rendering, and RTL language support. This makes SkiaSharp for Unity an excellent choice for projects that require advanced text rendering capabilities.
   
 
-https://github.com/ammariqais/SkiaForUnity/assets/62248657/ac1a8c35-bb24-4b64-ac3e-85a5b06ed276
+https://github.com/BoundlessDrop/SkiaUnity
 
 
 
@@ -36,24 +36,24 @@ https://github.com/ammariqais/SkiaForUnity/assets/62248657/ac1a8c35-bb24-4b64-ac
 
 ## Watch the SkiaForUnity v1.0.0.Pre-2 Release Videos:
 ## Editor Mode
-https://github.com/ammariqais/SkiaForUnity/assets/62248657/ccf71cd1-17ae-4442-b42f-4d3d067849f1
+https://github.com/BoundlessDrop/SkiaUnity/tree/main
 
 ## Playing Animations
 
-https://github.com/ammariqais/SkiaForUnity/assets/62248657/cc7a5d56-48e7-4e28-8e18-b8e8ec776eab
+https://github.com/BoundlessDrop/SkiaUnity/tree/main
 
 ## Getting Started
 
 To get started with SkiaSharp for Unity, follow these steps:
 
-1. Clone or download the SkiaSharp for Unity repository from [GitHub](git@github.com:ammariqais/SkiaForUnity.git). or you can use
+1. Clone or download the SkiaSharp for Unity repository from [GitHub](git@github.com:BoundlessDrop/SkiaUnity.git). or you can use
 
 **Package Manager** 
 1. Open your Unity project and navigate to `Windows`> `Package Manager`.
 2. Click the `+` button in the top-left corner and select Add package from git URL
 3. Enter the following URL and click `Add`
 
-`https://github.com/ammariqais/SkiaForUnity.git?path=SkiaUnity/Assets/SkiaSharp`
+`https://github.com/BoundlessDrop/SkiaUnity.git?path=Assets/SkiaForUnity`
 
 3. Import the SkiaSharp package into your Unity project.
    
@@ -67,24 +67,20 @@ To get started with SkiaSharp for Unity, follow these steps:
 
 8. Build and run your Unity project on an iOS device to see the Skia graphics and Lottie animations in action.
 
-## Tutorials
-[Document](https://ammariqais.github.io/SkiaForUnity/html/)
 
 ## Contributing
 
-Contributions to SkiaSharp for Unity are welcome! If you encounter any issues, have suggestions for improvements, or would like to contribute code, please feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/ammariqais/SkiaForUnity).
+Contributions to SkiaSharp for Unity are welcome! If you encounter any issues, have suggestions for improvements, or would like to contribute code, please feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/BoundlessDrop/SkiaUnity/).
 
 ## License
 
-SkiaSharp for Unity is licensed under the [MIT License](https://github.com/ammariqais/SkiaForUnity/blob/main/LICENSE). Please refer to the LICENSE file for more information.
+SkiaSharp for Unity is licensed under the [MIT License](https://github.com/BoundlessDrop/SkiaUnity/tree/main?tab=MIT-1-ov-file). Please refer to the LICENSE file for more information.
 
 ## Support
 
-If you have any questions, need assistance, or want to join a community of developers using SkiaSharp for Unity, you can:
+If you have any questions, need assistance, or want to join a community of developers using SkiaSharp for Unity, you can open a new github issue under the repo
 
-- Visit the [SkiaSharp for Unity GitHub Discussions](https://github.com/ammariqais/SkiaForUnity/discussions) page to engage in discussions and ask questions.
-
-- Open an issue on the [GitHub repository](https://github.com/ammariqais/SkiaForUnity/issues) if you encounter any bugs or problems.
+[GitHub repository](https://github.com/BoundlessDrop/SkiaUnity/issues)
 
 ## Acknowledgements
 
