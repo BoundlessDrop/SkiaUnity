@@ -85,3 +85,10 @@ If you have any questions, need assistance, or want to join a community of devel
 ## Acknowledgements
 
 SkiaSharp for Unity is built on top of the amazing SkiaSharp library and includes the Skottie library for Lottie animations. We would like to express our gratitude to the SkiaSharp and Skottie communities for their hard work and dedication in developing and maintaining these powerful libraries.
+
+
+## Important Note
+
+The following changes have been applied into Skia-Bindings in order for skia to run properly inside unity:
+
+SkiaSharpVersion.cs -> CheckNativeLibraryCompatible -> skip compatiblity check by force returning true.
