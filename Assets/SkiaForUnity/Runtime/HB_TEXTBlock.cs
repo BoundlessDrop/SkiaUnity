@@ -16,59 +16,59 @@ namespace SkiaSharp.Unity.HB {
 	public class HB_TEXTBlock : MonoBehaviour, ILayoutElement {
 		[SerializeField]
 		[TextArea]
-		private string Text;
+		protected string Text;
 		[SerializeField]
 		public TextAsset font;
 		[SerializeField]
-		private int fontSize = 12, letterSpacing, maxLines;
+		protected int fontSize = 12, letterSpacing, maxLines;
 		[SerializeField]
 		[Range (0,100)]
-		private int outlineWidth, outlineBlur;
+		protected int outlineWidth, outlineBlur;
 		[SerializeField]
 		[Range (0,10)]
-		private int shadowWidth;
+		protected int shadowWidth;
 		[SerializeField]
 		[Range (0,1)]
-		private int innerGlowWidth = 0;
+		protected int innerGlowWidth = 0;
 		[SerializeField]
 		[Range (-100,100)]
-		float shadowOffsetX, shadowOffsetY = 1;
+		protected float shadowOffsetX, shadowOffsetY = 1;
 		[SerializeField]
-		private Color fontColor = Color.black, outlineColor = Color.black, shadowColor = Color.black, innerGlowColor = Color.white, backgroundColor = Color.clear,linkColor = Color.blue;
+		protected Color fontColor = Color.black, outlineColor = Color.black, shadowColor = Color.black, innerGlowColor = Color.white, backgroundColor = Color.clear,linkColor = Color.blue;
 		[SerializeField]
-		private bool italic, bold, autoFitVertical = true, autoFitHorizontal, renderLinks, enableGradiant, enableEllipsis = true;
+		protected bool italic, bold, autoFitVertical = true, autoFitHorizontal, renderLinks, enableGradiant, enableEllipsis = true;
 		[SerializeField]
-		private UnderlineStyle underlineStyle;
+		protected UnderlineStyle underlineStyle;
 		[SerializeField]
-		private StrikeThroughStyle strikeThroughStyle;
+		protected StrikeThroughStyle strikeThroughStyle;
 		[SerializeField]
-		private float lineHeight = 1.0f, maxWidth = 264, maxHeight = -1 , gradiantAngle = 90;
+		protected float lineHeight = 1.0f, maxWidth = 264, maxHeight = -1 , gradiantAngle = 90;
 		[SerializeField]
-		private HBColorFormat colorType = HBColorFormat.alpha8; 
+		protected HBColorFormat colorType = HBColorFormat.alpha8; 
 		[SerializeField] 
-		private TextAlignment textAlignment = TextAlignment.Left;
+		protected TextAlignment textAlignment = TextAlignment.Left;
 		[SerializeField]
-		Color[] gradiantColors;
+		protected Color[] gradiantColors;
 		[SerializeField]
-		float[] gradiantPositions;
+		protected float[] gradiantPositions;
 
         
-		private SKCanvas canvas;
-		private SKImageInfo info = new SKImageInfo();
-		private SKSurface surface;
-		private SKPixmap pixmap;
-		private RawImage rawImage;
-		private Texture2D texture;
-		private TextBlock rs;
-		private Dictionary<int, HBLinks> urls = new Dictionary<int, HBLinks>();
-		private Style styleBoldItalic = new Style();
+		protected SKCanvas canvas;
+		protected SKImageInfo info = new SKImageInfo();
+		protected SKSurface surface;
+		protected SKPixmap pixmap;
+		protected RawImage rawImage;
+		protected Texture2D texture;
+		protected TextBlock rs;
+		protected Dictionary<int, HBLinks> urls = new Dictionary<int, HBLinks>();
+		protected Style styleBoldItalic = new Style();
 		string pattern = @"(https?://\S+|www\.\S+)";
-		private Regex regex;
+		protected Regex regex;
 		SKTypeface skTypeface;
 		RectTransform rectTransform;
-		private float currentWidth, currentHeight, currentPreferdWidth = 0, currentPreferdHeight;
-		private TextGradient blockGradient;
-		private bool widthPreferred, heightPreferred;
+		protected float currentWidth, currentHeight, currentPreferdWidth = 0, currentPreferdHeight;
+		protected TextGradient blockGradient;
+		protected bool widthPreferred, heightPreferred;
 
 		public TextBlock Info => rs;
 
@@ -374,7 +374,7 @@ namespace SkiaSharp.Unity.HB {
 			styleBoldItalic.StrikeThrough = strikeThroughStyle;
 		}
 
-		private void OnEnable() {
+		protected void OnEnable() {
 			if (String.IsNullOrEmpty(Text)){
 				return;
 			}
@@ -385,7 +385,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 
-		private bool textRendered;
+		protected bool textRendered;
         
 		
 		// Convert a Color to a uint
@@ -399,7 +399,7 @@ namespace SkiaSharp.Unity.HB {
 		
 		
 
-		private void RenderText() {
+		protected void RenderText() {
 			if (rawImage && String.IsNullOrEmpty(text)) {
 				rawImage.enabled = false;
 			}
@@ -532,7 +532,7 @@ namespace SkiaSharp.Unity.HB {
 			textRendered = true;
 		}
 
-		private void RenderLinksCall() {
+		protected void RenderLinksCall() {
 			Style styleLink = new Style() {
 			FontSize = fontSize,
 			TextColor = new SKColor(ColorToUint(linkColor)),
@@ -577,7 +577,7 @@ namespace SkiaSharp.Unity.HB {
 				}
 		}
         
-		private void FixedUpdate() {
+		protected void FixedUpdate() {
 			if (currentWidth != rectTransform.rect.width || currentHeight != currentPreferdHeight) {
 				urls.Clear();
 				RenderText();
@@ -640,7 +640,7 @@ namespace SkiaSharp.Unity.HB {
 				return "";
 		}
 
-		private void OnDestroy() {
+		protected void OnDestroy() {
 			Dispose();
 			if (texture != null) {
 				#if !UNITY_EDITOR
@@ -657,7 +657,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		private void OnDisable() {
+		protected void OnDisable() {
 			Dispose();
 			#if !UNITY_EDITOR
 				DestroyImmediate(rawImage.texture);
@@ -674,7 +674,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 
-		private void Dispose() {
+		protected void Dispose() {
 			if (pixmap != null) {
 				pixmap.Dispose();
 				pixmap = null;
@@ -708,7 +708,7 @@ namespace SkiaSharp.Unity.HB {
 		}
 		public float flexibleWidth { get; }
 		public float minHeight { get; }
-		private TextBlock temp = new TextBlock();
+		protected TextBlock temp = new TextBlock();
 		public float preferredHeight {
 			get {
 				heightPreferred = true;
