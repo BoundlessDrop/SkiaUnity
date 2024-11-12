@@ -20,7 +20,7 @@ namespace SkiaSharp.Unity.HB {
 		[SerializeField]
 		public TextAsset font;
 		[SerializeField]
-		protected int fontSize = 12, letterSpacing, maxLines;
+		protected int fontSize = 20, letterSpacing, maxLines;
 		[SerializeField]
 		[Range (0,100)]
 		protected int outlineWidth, outlineBlur;
@@ -44,9 +44,9 @@ namespace SkiaSharp.Unity.HB {
 		[SerializeField]
 		protected float lineHeight = 1.0f, maxWidth = 264, maxHeight = -1 , gradiantAngle = 90;
 		[SerializeField]
-		protected HBColorFormat colorType = HBColorFormat.alpha8; 
+		protected HBColorFormat colorType = HBColorFormat.rgb32; 
 		[SerializeField] 
-		protected TextAlignment textAlignment = TextAlignment.Left;
+		protected TextAlignment textAlignment = TextAlignment.Center;
 		[SerializeField]
 		protected Color[] gradiantColors;
 		[SerializeField]
@@ -54,25 +54,25 @@ namespace SkiaSharp.Unity.HB {
 
         
 		protected SKCanvas canvas;
-		protected SKImageInfo info = new SKImageInfo();
+		protected SKImageInfo info = new();
 		protected SKSurface surface;
 		protected SKPixmap pixmap;
 		protected RawImage rawImage;
 		protected Texture2D texture;
 		protected TextBlock rs;
-		protected Dictionary<int, HBLinks> urls = new Dictionary<int, HBLinks>();
-		protected Style styleBoldItalic = new Style();
-		string pattern = @"(https?://\S+|www\.\S+)";
+		protected Dictionary<int, HBLinks> urls = new();
+		protected Style styleBoldItalic = new();
+		protected string pattern = @"(https?://\S+|www\.\S+)";
 		protected Regex regex;
-		SKTypeface skTypeface;
-		RectTransform rectTransform;
+		protected SKTypeface skTypeface;
+		protected RectTransform rectTransform;
 		protected float currentWidth, currentHeight, currentPreferdWidth = 0, currentPreferdHeight;
 		protected TextGradient blockGradient;
 		protected bool widthPreferred, heightPreferred;
 
-		public TextBlock Info => rs;
+		public virtual TextBlock Info => rs;
 
-		public float MaxWidth {
+		public virtual float MaxWidth {
 			get => maxWidth;
 			set {
 				maxWidth = value;
@@ -87,7 +87,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public float MaxHeight {
+		public virtual float MaxHeight {
 			get => maxHeight;
 			set {
 				maxHeight = value;
@@ -102,7 +102,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public string text {
+		public virtual string text {
 			get => Text;
 			set {
 				Text = value;
@@ -110,7 +110,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 
-		public Color FontColor {
+		public virtual Color FontColor {
 			get {
 				return fontColor;
 			}
@@ -123,7 +123,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public Color HaloColor {
+		public virtual Color HaloColor {
 			get {
 				return outlineColor;
 			}
@@ -133,7 +133,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 
-		public Color ShadowColor {
+		public virtual Color ShadowColor {
 			get {
 				return shadowColor;
 			}
@@ -143,7 +143,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 
-		public Color InnerGlowColor {
+		public virtual Color InnerGlowColor {
 			get {
 				return innerGlowColor;
 			}
@@ -153,7 +153,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public Color BackgroundColor {
+		public virtual Color BackgroundColor {
 			get {
 				return backgroundColor;
 			}
@@ -163,7 +163,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public HBColorFormat ColorType {
+		public virtual HBColorFormat ColorType {
 			get {
 				return colorType;
 			}
@@ -173,7 +173,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public bool AutoFitVertical {
+		public virtual bool AutoFitVertical {
 			get {
 				return autoFitVertical;
 			}
@@ -183,7 +183,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public bool AutoFitHorizontal {
+		public virtual bool AutoFitHorizontal {
 			get {
 				return autoFitHorizontal;
 			}
@@ -193,7 +193,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 
-		public bool IsGradiantEnabled {
+		public virtual bool IsGradiantEnabled {
 			get {
 				return enableGradiant;
 			}
@@ -203,7 +203,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public bool RenderLinks {
+		public virtual bool RenderLinks {
 			get {
 				return renderLinks;
 			}
@@ -213,7 +213,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public TextAsset Font {
+		public virtual TextAsset Font {
 			get {
 				return font;
 			}
@@ -223,7 +223,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public bool Bold {
+		public virtual bool Bold {
 			get {
 				return bold;
 			}
@@ -233,7 +233,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public bool Italic {
+		public virtual bool Italic {
 			get {
 				return italic;
 			}
@@ -243,7 +243,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public int FontSize {
+		public virtual int FontSize {
 			get {
 				return fontSize;
 			}
@@ -253,7 +253,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public int HaloWidth {
+		public virtual int HaloWidth {
 			get {
 				return outlineWidth;
 			}
@@ -263,7 +263,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 
-		public int ShadowWidth {
+		public virtual int ShadowWidth {
 			get {
 				return shadowWidth;
 			}
@@ -273,7 +273,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 
-		public int InnerGlowWidth {
+		public virtual int InnerGlowWidth {
 			get {
 				return innerGlowWidth;
 			}
@@ -283,7 +283,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public int LetterSpacing {
+		public virtual int LetterSpacing {
 			get {
 				return letterSpacing;
 			}
@@ -293,7 +293,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public int HaloBlur {
+		public virtual int HaloBlur {
 			get {
 				return outlineBlur;
 			}
@@ -303,7 +303,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public UnderlineStyle UnderLineStyle {
+		public virtual UnderlineStyle UnderLineStyle {
 			get {
 				return underlineStyle;
 			}
@@ -313,7 +313,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public StrikeThroughStyle  StrikeThroughStyle{
+		public virtual StrikeThroughStyle  StrikeThroughStyle{
 			get {
 				return strikeThroughStyle;
 			}
@@ -323,7 +323,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public float  LineHeight{
+		public virtual float LineHeight{
 			get {
 				return LineHeight;
 			}
@@ -333,7 +333,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public TextAlignment  TextAlignment{
+		public virtual TextAlignment TextAlignment{
 			get {
 				return textAlignment;
 			}
@@ -345,7 +345,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 
-		void Awake() {
+		protected virtual void Awake() {
 			rawImage = GetComponent<RawImage>();
 			if (rawImage) {
 				rawImage.enabled = false;
@@ -374,7 +374,7 @@ namespace SkiaSharp.Unity.HB {
 			styleBoldItalic.StrikeThrough = strikeThroughStyle;
 		}
 
-		protected void OnEnable() {
+		protected virtual void OnEnable() {
 			if (String.IsNullOrEmpty(Text)){
 				return;
 			}
@@ -389,7 +389,7 @@ namespace SkiaSharp.Unity.HB {
         
 		
 		// Convert a Color to a uint
-		public uint ColorToUint(Color color){
+		public virtual uint ColorToUint(Color color){
 			uint alpha = (uint)(color.a * 255);
 			uint red = (uint)(color.r * 255);
 			uint green = (uint)(color.g * 255);
@@ -399,7 +399,7 @@ namespace SkiaSharp.Unity.HB {
 		
 		
 
-		protected void RenderText() {
+		protected virtual void RenderText() {
 			if (rawImage && String.IsNullOrEmpty(text)) {
 				rawImage.enabled = false;
 			}
@@ -532,7 +532,7 @@ namespace SkiaSharp.Unity.HB {
 			textRendered = true;
 		}
 
-		protected void RenderLinksCall() {
+		protected virtual void RenderLinksCall() {
 			Style styleLink = new Style() {
 			FontSize = fontSize,
 			TextColor = new SKColor(ColorToUint(linkColor)),
@@ -577,14 +577,14 @@ namespace SkiaSharp.Unity.HB {
 				}
 		}
         
-		protected void FixedUpdate() {
+		protected virtual void FixedUpdate() {
 			if (currentWidth != rectTransform.rect.width || currentHeight != currentPreferdHeight) {
 				urls.Clear();
 				RenderText();
 			}
 		}
 
-		public void ReUpdate() {
+		public virtual void ReUpdate() {
 			if (rawImage == null) {
 				rawImage = GetComponent<RawImage>();
 				rectTransform = transform as RectTransform;
@@ -594,7 +594,7 @@ namespace SkiaSharp.Unity.HB {
 		}
 		
 		#if UNITY_EDITOR
-		public void ReUpdateEditMode() {
+		public virtual void ReUpdateEditMode() {
 			if (rawImage == null) {
 				rawImage = GetComponent<RawImage>();
 				rectTransform = transform as RectTransform;
@@ -624,7 +624,7 @@ namespace SkiaSharp.Unity.HB {
 		}
 		#endif
 
-		public string LinkPressed() {
+		public virtual string LinkPressed() {
 				RectTransform rawImageRect = GetComponent<RectTransform>();
 				if (RectTransformUtility.ScreenPointToLocalPointInRectangle(rawImageRect, Input.mousePosition, Camera.main, out var localMousePosition)) {
 					float normalizedX = Mathf.InverseLerp(-rawImageRect.rect.width / 2, rawImageRect.rect.width / 2, localMousePosition.x);
@@ -640,7 +640,7 @@ namespace SkiaSharp.Unity.HB {
 				return "";
 		}
 
-		protected void OnDestroy() {
+		protected virtual void OnDestroy() {
 			Dispose();
 			if (texture != null) {
 				#if !UNITY_EDITOR
@@ -657,7 +657,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		protected void OnDisable() {
+		protected virtual void OnDisable() {
 			Dispose();
 			#if !UNITY_EDITOR
 				DestroyImmediate(rawImage.texture);
@@ -674,7 +674,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 
-		protected void Dispose() {
+		protected virtual void Dispose() {
 			if (pixmap != null) {
 				pixmap.Dispose();
 				pixmap = null;
@@ -690,14 +690,14 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public void CalculateLayoutInputHorizontal() {}
+		public virtual void CalculateLayoutInputHorizontal() {}
 
 		
-		public void CalculateLayoutInputVertical() {}
+		public virtual void CalculateLayoutInputVertical() {}
 
 		
-		public float minWidth { get; }
-		public float preferredWidth {
+		public virtual float minWidth { get; }
+		public virtual float preferredWidth {
 			get {
 				widthPreferred = true;
 				if (rs != null) {
@@ -706,10 +706,11 @@ namespace SkiaSharp.Unity.HB {
 				return currentWidth;
 			}
 		}
-		public float flexibleWidth { get; }
-		public float minHeight { get; }
+		public virtual float flexibleWidth { get; }
+		public virtual float minHeight { get; }
 		protected TextBlock temp = new TextBlock();
-		public float preferredHeight {
+		
+		public virtual float preferredHeight {
 			get {
 				heightPreferred = true;
 				if (rs != null && textRendered) {
@@ -729,10 +730,10 @@ namespace SkiaSharp.Unity.HB {
 				return temp.MeasuredHeight;
 			}
 		}
-		public float flexibleHeight { get; }
-		public int layoutPriority { get; }
+		public virtual float flexibleHeight { get; }
+		public virtual int layoutPriority { get; }
 
-		public void RefreshFontFamily() {
+		public virtual void RefreshFontFamily() {
 			if (font != null) {
 				var bytes = font.bytes;
 				SKData copy = SKData.CreateCopy(bytes);
