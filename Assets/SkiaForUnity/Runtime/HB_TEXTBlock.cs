@@ -462,16 +462,32 @@ namespace SkiaSharp.Unity.HB {
 
 
 			if (autoFitVertical) {
-				var size= autoFitHorizontal ? new Vector2(currentPreferdWidth, heightPreferred == true ? rectTransform.sizeDelta.y : rs.MeasuredHeight ) : new Vector2(rectTransform.rect.width, heightPreferred == true ? rs.MeasuredHeight : rs.MeasuredHeight );
-				if (size.x == 0) {
-					return;
-				}
+				var size = autoFitHorizontal
+					? new Vector2(currentPreferdWidth, heightPreferred ? rectTransform.sizeDelta.y : rs.MeasuredHeight)
+					: new Vector2(rectTransform.rect.width, heightPreferred ? rectTransform.sizeDelta.y : rs.MeasuredHeight);
 
-				rectTransform.sizeDelta = size;
+				if (size.x == 0) return;
+
+				// Only set sizeDelta if the RectTransform is not in stretch mode for that axis
+				if (rectTransform.anchorMin.x == rectTransform.anchorMax.x) {
+					rectTransform.sizeDelta = new Vector2(size.x, rectTransform.sizeDelta.y); // Modify width if not stretching horizontally
+				}
+				if (rectTransform.anchorMin.y == rectTransform.anchorMax.y) {
+					rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, size.y); // Modify height if not stretching vertically
+				}
 			} else {
-				var size= autoFitHorizontal ? new Vector2(currentPreferdWidth, !heightPreferred ? currentPreferdHeight : rectTransform.rect.height) : new Vector2(rectTransform.rect.width, rectTransform.rect.height );
-				rectTransform.sizeDelta = size;
+				var size = autoFitHorizontal
+					? new Vector2(currentPreferdWidth, !heightPreferred ? currentPreferdHeight : rectTransform.rect.height)
+					: new Vector2(rectTransform.rect.width, rectTransform.rect.height);
+
+				if (rectTransform.anchorMin.x == rectTransform.anchorMax.x) {
+					rectTransform.sizeDelta = new Vector2(size.x, rectTransform.sizeDelta.y); // Modify width if not stretching horizontally
+				}
+				if (rectTransform.anchorMin.y == rectTransform.anchorMax.y) {
+					rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, size.y); // Modify height if not stretching vertically
+				}
 			}
+
 			
 			currentWidth = rectTransform.rect.width;
 			currentHeight = rectTransform.rect.height;
