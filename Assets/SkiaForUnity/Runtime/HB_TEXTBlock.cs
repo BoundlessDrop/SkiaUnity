@@ -398,6 +398,8 @@ namespace SkiaSharp.Unity.HB {
 		}
 		
 		
+		protected enum VerticalAlignment { Top, Middle, Bottom }
+		protected VerticalAlignment verticalAlignment = VerticalAlignment.Top; // Default alignment
 
 		protected virtual void RenderText() {
 			if (rawImage && String.IsNullOrEmpty(text)) {
@@ -459,8 +461,7 @@ namespace SkiaSharp.Unity.HB {
 
 			rs.MaxHeight = currentPreferdHeight;
 			//rs.MaxHeight = currentPreferdHeight = rs.MeasuredHeight;
-
-
+			
 			if (autoFitVertical) {
 				var size = autoFitHorizontal
 					? new Vector2(currentPreferdWidth, heightPreferred ? rectTransform.sizeDelta.y : rs.MeasuredHeight)
@@ -477,7 +478,7 @@ namespace SkiaSharp.Unity.HB {
 				}
 			} else {
 				var size = autoFitHorizontal
-					? new Vector2(currentPreferdWidth, !heightPreferred ? currentPreferdHeight : rectTransform.rect.height)
+					? new Vector2(currentPreferdWidth, rectTransform.rect.height)
 					: new Vector2(rectTransform.rect.width, rectTransform.rect.height);
 
 				if (rectTransform.anchorMin.x == rectTransform.anchorMax.x) {
@@ -512,7 +513,20 @@ namespace SkiaSharp.Unity.HB {
 			surface = SKSurface.Create(info);
 			canvas = surface.Canvas;
 			canvas.Scale(1, -1);
-            canvas.Translate(0, -info.Height);
+   //canvas.Translate(0, -info.Height);
+   
+// Calculate vertical offset based on alignment
+   float verticalOffset = 0;
+   if (verticalAlignment == VerticalAlignment.Middle) {
+	   verticalOffset = (-info.Height + (currentHeight - rs.MeasuredHeight) / 2);
+   } else if (verticalAlignment == VerticalAlignment.Bottom) {
+	   verticalOffset = -info.Height + (currentHeight - rs.MeasuredHeight);
+   } else {
+	   verticalOffset = -info.Height;
+   }
+   canvas.Translate(0, verticalOffset); // Apply vertical alignment offset within bounds
+
+   
 			TextureFormat format = (info.ColorType == SKColorType.Rgba8888) ? TextureFormat.RGBA32 : info.ColorType == SKColorType.Alpha8 ? TextureFormat.Alpha8 : TextureFormat.RGBA32;
 			if (texture == null) {
 				texture = new Texture2D(roundedWidth, roundedHeight, format, false);
