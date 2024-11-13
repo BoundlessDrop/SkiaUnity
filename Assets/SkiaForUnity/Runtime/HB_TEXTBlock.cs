@@ -72,6 +72,11 @@ namespace SkiaSharp.Unity.HB {
 
 		public virtual TextBlock Info => rs;
 
+		protected enum VerticalAlignment { Top, Middle, Bottom }
+		[SerializeField]
+		protected VerticalAlignment verticalAlignment = VerticalAlignment.Top; // Default alignment
+
+		
 		public virtual float MaxWidth {
 			get => maxWidth;
 			set {
@@ -397,10 +402,6 @@ namespace SkiaSharp.Unity.HB {
 			return (alpha << 24) | (red << 16) | (green << 8) | blue;
 		}
 		
-		
-		protected enum VerticalAlignment { Top, Middle, Bottom }
-		protected VerticalAlignment verticalAlignment = VerticalAlignment.Top; // Default alignment
-
 		protected virtual void RenderText() {
 			if (rawImage && String.IsNullOrEmpty(text)) {
 				rawImage.enabled = false;

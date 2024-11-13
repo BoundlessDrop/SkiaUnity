@@ -15,7 +15,7 @@ public class HBTextBlockEditor : Editor {
     italicProperty, boldProperty, haloColorProperty,shadowColorProperty, haloWidthProperty,
     shadowWidthProperty,shadowOffsetXProperty,shadowOffsetYProperty,innerGlowColorProperty, innerGlowWidthProperty, letterSpacingProperty, autoFitVerticalProperty, renderLinksProperty,
     haloBlurProperty, backgroundColorProperty, underlineStyleProperty, lineHeightProperty,
-    strikeThroughStyleProperty,textProperty, textAligmentProperty,colorTypeProperty, autoFitHorizontalProperty, maxWidthProperty, maxHeightProperty, gradiantColorsProperty
+    strikeThroughStyleProperty,textProperty, textAlignmentProperty, textVerticalAlignmentProperty,colorTypeProperty, autoFitHorizontalProperty, maxWidthProperty, maxHeightProperty, gradiantColorsProperty
     ,gradiantPositionsProperty, enableGradiantProperty, gradiantAngleProperty, ellipsisProperty, maxLines, linkColorProperty;
 
   private bool showHaloSettings = true;
@@ -63,7 +63,8 @@ public class HBTextBlockEditor : Editor {
     lineHeightProperty = serializedObject.FindProperty("lineHeight");
     strikeThroughStyleProperty = serializedObject.FindProperty("strikeThroughStyle");
     textProperty = serializedObject.FindProperty("Text");
-    textAligmentProperty = serializedObject.FindProperty("textAlignment");
+    textAlignmentProperty = serializedObject.FindProperty("textAlignment");
+    textVerticalAlignmentProperty = serializedObject.FindProperty("verticalAlignment");
     ellipsisProperty = serializedObject.FindProperty("enableEllipsis");
     colorTypeProperty = serializedObject.FindProperty("colorType");
     gradiantColorsProperty = serializedObject.FindProperty("gradiantColors");
@@ -93,7 +94,8 @@ public class HBTextBlockEditor : Editor {
       EditorGUILayout.PropertyField(fontColorProperty);
       EditorGUILayout.PropertyField(fontProperty);
       EditorGUILayout.PropertyField(fontSizeProperty);
-      EditorGUILayout.PropertyField(textAligmentProperty);
+      EditorGUILayout.PropertyField(textAlignmentProperty);
+      EditorGUILayout.PropertyField(textVerticalAlignmentProperty);
       
       GUILayout.Label("Font Style:", largeLabelStyle);   
       EditorGUILayout.BeginHorizontal();
