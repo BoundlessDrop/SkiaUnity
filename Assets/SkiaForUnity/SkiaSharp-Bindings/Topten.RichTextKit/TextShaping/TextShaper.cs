@@ -1,16 +1,16 @@
 ﻿// RichTextKit
 // Copyright © 2019-2020 Topten Software. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License"); you may
-// not use this product except in compliance with the License. You may obtain
+// 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may 
+// not use this product except in compliance with the License. You may obtain 
 // a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-// License for the specific language governing permissions and limitations
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
+// License for the specific language governing permissions and limitations 
 // under the License.
 
 using HarfBuzzSharp;
@@ -54,7 +54,7 @@ namespace Topten.RichTextKit
         }
 
         /// <summary>
-        /// Constructs a new TextShaper
+        /// Constructs a new TextShaper 
         /// </summary>
         /// <param name="typeface">The typeface of this shaper</param>
         private TextShaper(SKTypeface typeface)
@@ -70,10 +70,8 @@ namespace Topten.RichTextKit
                 face.UnitsPerEm = typeface.UnitsPerEm;
 
                 _font = new HarfBuzzSharp.Font(face);
-                #if !UNITY_EDITOR_LINUX
-                 _font.SetScale(overScale, overScale);
-                 _font.SetFunctionsOpenType();
-                #endif
+                _font.SetScale(overScale, overScale);
+                _font.SetFunctionsOpenType();
             }
 
             // Get font metrics for this typeface
@@ -249,12 +247,12 @@ namespace Topten.RichTextKit
                     r.CodePointXCoords[j] = r.GlyphPositions[i].X;
                 }
 
-                xCoord += widths[0] + style.LetterSpacing / glyphScale;
+                xCoord += widths[0] + style.LetterSpacing / glyphScale; 
             }
 
             // Also return the end cursor position
             r.EndXCoord = new SKPoint(xCoord * glyphScale, 0);
-
+            
             ApplyFontMetrics(ref r, style.FontSize);
 
             return r;
@@ -289,7 +287,7 @@ namespace Topten.RichTextKit
             // Work out how much to shift glyphs in the character cell when using letter spacing
             // The idea here is to align the glyphs within the character cell the same way as the
             // text block alignment so that left/right aligned text still aligns with the margin
-            // and centered text is still centered (and not shifted slightly due to the extra
+            // and centered text is still centered (and not shifted slightly due to the extra 
             // space that would be at the right with normal letter spacing).
             float glyphLetterSpacingAdjustment = 0;
             switch (textAlignment)
@@ -354,7 +352,7 @@ namespace Topten.RichTextKit
                 r.Clusters = bufferSet.Clusters.Add((int)buffer.Length, false);
                 r.CodePointXCoords = bufferSet.CodePointXCoords.Add(codePoints.Length, false);
                 r.CodePointXCoords.Fill(0);
-
+                
                 // Convert points
                 var gp = buffer.GlyphPositions;
                 var gi = buffer.GlyphInfos;
@@ -366,19 +364,19 @@ namespace Topten.RichTextKit
                     r.GlyphIndicies[i] = (ushort)gi[i].Codepoint;
                     r.Clusters[i] = (int)gi[i].Cluster + clusterAdjustment;
 
-
+                    
                     // Update code point positions
                     if (!rtl)
                     {
                         // First cluster, different cluster, or same cluster with lower x-coord
                         if ( i == 0 ||
-                            (r.Clusters[i] != r.Clusters[i - 1]) ||
+                            (r.Clusters[i] != r.Clusters[i - 1]) || 
                             (cursorX < r.CodePointXCoords[r.Clusters[i] - clusterAdjustment]))
                         {
                             r.CodePointXCoords[r.Clusters[i] - clusterAdjustment] = cursorX;
                         }
                     }
-
+    
                     // Get the position
                     var pos = gp[i];
 
@@ -404,7 +402,7 @@ namespace Topten.RichTextKit
                         cursorX += style.LetterSpacing;
                     }
 
-                    // Are we falling back for a fixed pitch font and is the next character a
+                    // Are we falling back for a fixed pitch font and is the next character a 
                     // new cluster?  If so advance by the width of the original font, not this
                     // fallback font
                     if (forceFixedPitchWidth != 0)
@@ -427,7 +425,7 @@ namespace Topten.RichTextKit
                             }
                             else
                             {
-                                // Character is wider (probably an emoji) so we
+                                // Character is wider (probably an emoji) so we 
                                 // allow it to exceed the fixed pitch character width
                                 cursorXCluster = cursorX;
                             }
