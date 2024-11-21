@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace HarfBuzzSharp
 {
-#if UNITY_EDITOR_OSX
+#if UNITY_EDITOR_Linux
 	public static class LibraryLoader
 	{
 		static LibraryLoader ()

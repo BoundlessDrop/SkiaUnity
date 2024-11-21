@@ -1,57 +1,76 @@
+#if UNITY_EDITOR_Linux
 using UnityEditor;
 using UnityEngine;
 using System.IO;
+using System;
 
-namespace HarfBuzzSharp {
-  [InitializeOnLoad]
-  public static class LinuxLoadResolver {
-    static LinuxLoadResolver() {
-      LoadHarfBuzzLibrary();
-    }
+public class LinuxLoadResolverWindow : EditorWindow {
+  private static string libraryStatus = "Not Checked";
 
-    private static void LoadHarfBuzzLibrary() {
-      // Get the path of the package
-      string packagePath = GetPackagePath("com.jawaker.skiaunity");
+  [MenuItem("Jawaker/[HarfBuzz] Linux Load Resolver Status")]
+  public static void ShowWindow() {
+    GetWindow<LinuxLoadResolverWindow>("Linux Load Resolver Status");
+  }
 
-      if (string.IsNullOrEmpty(packagePath)) {
-        Debug.LogError("SkiaForUnity package not found in the Package Manager.");
-        return;
-      }
+  private void OnGUI() {
+    GUILayout.Label("HarfBuzz Library Load Status", EditorStyles.boldLabel);
+    GUILayout.Label($"Status: {libraryStatus}", EditorStyles.wordWrappedLabel);
 
-      string libraryPath = Path.Combine(packagePath, "Library", "Linux", "linux-x64", "native", "libHarfBuzzSharp.so");
-
-      if (File.Exists(libraryPath)) {
-        Debug.Log($"Loading HarfBuzz library from: {libraryPath}");
-        var intPtr = LibraryLoader.LoadLibrary(libraryPath);
-        Debug.LogError($"Loaded HarfBuzz library from: {libraryPath} for Linux");
-      } else {
-        Debug.LogError($"Library not found at path: {libraryPath}");
-      }
-    }
-
-    private static string GetPackagePath(string packageName) {
-      string packagePath = null;
-
-      // Query the Package Manager for package info
-      var request = UnityEditor.PackageManager.Client.List(true); // Refresh=true to get up-to-date data
-
-      while (!request.IsCompleted) {
-        System.Threading.Thread.Sleep(10);
-      }
-
-      if (request.Status == UnityEditor.PackageManager.StatusCode.Success) {
-        foreach (var package in request.Result) {
-          Debug.LogError($"Found package: {package.name}");
-          if (package.name == packageName) {
-            packagePath = package.resolvedPath;
-            break;
-          }
-        }
-      } else if (request.Status >= UnityEditor.PackageManager.StatusCode.Failure) {
-        Debug.LogError($"Failed to list packages: {request.Error.message}");
-      }
-
-      return packagePath;
+    if (GUILayout.Button("Reload Library")) {
+      CheckLibraryStatus();
     }
   }
+
+  [InitializeOnLoadMethod]
+  private static void Initialize() {
+    CheckLibraryStatus();
+  }
+
+  private static void CheckLibraryStatus() {
+    IntPtr result = LoadHarfBuzzLibrary();
+    libraryStatus = result == IntPtr.Zero ? "Failed" : "Success";
+    Debug.Log($"Library Load Status: {libraryStatus} {result}");
+  }
+
+  private static IntPtr LoadHarfBuzzLibrary() {
+    string packagePath = GetPackagePath("com.jawaker.skiaunity"); // Replace with your package name
+
+    if (string.IsNullOrEmpty(packagePath)) {
+      Debug.LogError("SkiaForUnity package not found in the Package Manager.");
+      return IntPtr.Zero;
+    }
+
+    string libraryPath = Path.Combine(packagePath, "Library", "Linux", "linux-x64", "native", "libHarfBuzzSharp.so");
+
+    if (File.Exists(libraryPath)) {
+      return HarfBuzzSharp.LibraryLoader.LoadLibrary(libraryPath);
+    } else {
+      Debug.LogError($"Library not found at path: {libraryPath}");
+      return IntPtr.Zero;
+    }
+  }
+
+  private static string GetPackagePath(string packageName) {
+    string packagePath = null;
+
+    var request = UnityEditor.PackageManager.Client.List(true);
+
+    while (!request.IsCompleted) {
+      System.Threading.Thread.Sleep(10);
+    }
+
+    if (request.Status == UnityEditor.PackageManager.StatusCode.Success) {
+      foreach (var package in request.Result) {
+        if (package.name == packageName) {
+          packagePath = package.resolvedPath;
+          break;
+        }
+      }
+    } else if (request.Status >= UnityEditor.PackageManager.StatusCode.Failure) {
+      Debug.LogError($"Failed to list packages: {request.Error.message}");
+    }
+
+    return packagePath;
+  }
 }
+#endif
