@@ -1,4 +1,4 @@
-#if UNITY_EDITOR_Linux
+#if UNITY_EDITOR_LINUX
 using UnityEditor;
 using UnityEngine;
 using System.IO;
@@ -40,7 +40,7 @@ public class LinuxLoadResolverWindow : EditorWindow {
       return IntPtr.Zero;
     }
 
-    string libraryPath = Path.Combine(packagePath, "Library", "Linux", "linux-x64", "native", "libHarfBuzzSharp.so");
+    string libraryPath = Path.Combine(packagePath, "Library", "linux", "linux-x64", "native", "libHarfBuzzSharp.so");
 
     if (File.Exists(libraryPath)) {
       return HarfBuzzSharp.LibraryLoader.LoadLibrary(libraryPath);
