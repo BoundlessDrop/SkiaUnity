@@ -12,7 +12,7 @@ public class HBTextBlockEditor : Editor {
   private GUIStyle selectedStyle;
 
   private SerializedProperty fontSizeProperty, fontColorProperty, fontProperty,
-    italicProperty, boldProperty, haloColorProperty,shadowColorProperty, haloWidthProperty,
+    italicProperty, boldProperty, haloColorProperty, shadowGradientColorProperty, haloWidthProperty,
     shadowWidthProperty,shadowOffsetXProperty,shadowOffsetYProperty,innerGlowColorProperty, innerGlowWidthProperty, letterSpacingProperty, autoFitVerticalProperty, renderLinksProperty,
     haloBlurProperty, backgroundColorProperty, underlineStyleProperty, lineHeightProperty,
     strikeThroughStyleProperty,textProperty, textAlignmentProperty, textVerticalAlignmentProperty,colorTypeProperty, autoFitHorizontalProperty, maxWidthProperty, maxHeightProperty, gradiantColorsProperty
@@ -44,7 +44,7 @@ public class HBTextBlockEditor : Editor {
     italicProperty = serializedObject.FindProperty("italic");
     boldProperty = serializedObject.FindProperty("bold");
     haloColorProperty = serializedObject.FindProperty("outlineColor");
-    shadowColorProperty = serializedObject.FindProperty("shadowColor");
+    shadowGradientColorProperty = serializedObject.FindProperty("shadowGradientColor");
     haloWidthProperty = serializedObject.FindProperty("outlineWidth");
     shadowWidthProperty = serializedObject.FindProperty("shadowWidth");
     shadowOffsetXProperty = serializedObject.FindProperty("shadowOffsetX");
@@ -149,16 +149,17 @@ public class HBTextBlockEditor : Editor {
     {
       EditorGUILayout.BeginVertical("box");
       EditorGUILayout.PropertyField(shadowWidthProperty);
-      if(shadowWidthProperty.intValue > 0){
-        EditorGUILayout.PropertyField(shadowColorProperty);
+      if (shadowWidthProperty.intValue > 0) {
+        EditorGUILayout.PropertyField(shadowGradientColorProperty);
         EditorGUILayout.PropertyField(shadowOffsetXProperty);
         EditorGUILayout.PropertyField(shadowOffsetYProperty);
       }
+
       EditorGUILayout.EndVertical();
     }
     
     EditorGUILayout.PropertyField(enableGradiantProperty);
-      
+    
       if (script.IsGradiantEnabled) {
         EditorGUILayout.PropertyField(gradiantColorsProperty);
         EditorGUILayout.PropertyField(gradiantPositionsProperty);
