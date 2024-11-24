@@ -34,7 +34,9 @@ namespace SkiaSharp.Unity.HB {
 		[Range (-100,100)]
 		protected float shadowOffsetX, shadowOffsetY = 1;
 		[SerializeField]
-		protected Color fontColor = Color.black, outlineColor = Color.black, shadowColor = Color.black, innerGlowColor = Color.white, backgroundColor = Color.clear,linkColor = Color.blue;
+		protected Color fontColor = Color.black, innerGlowColor = Color.white, backgroundColor = Color.clear,linkColor = Color.blue;
+		[SerializeField]
+		protected Gradient shadowGradientColor = new(), outlineColor = new ();
 		[SerializeField]
 		protected bool italic, bold, autoFitVertical = true, autoFitHorizontal, renderLinks, enableGradiant, enableEllipsis = true;
 		[SerializeField]
@@ -128,7 +130,7 @@ namespace SkiaSharp.Unity.HB {
 			}
 		}
 		
-		public virtual Color HaloColor {
+		public virtual Gradient HaloColor {
 			get {
 				return outlineColor;
 			}
@@ -137,13 +139,11 @@ namespace SkiaSharp.Unity.HB {
 				ReUpdate();
 			}
 		}
-
-		public virtual Color ShadowColor {
-			get {
-				return shadowColor;
-			}
+		
+		public virtual Gradient ShadowGradientColor {
+			get => shadowGradientColor;
 			set {
-				shadowColor = value;
+				shadowGradientColor = value;
 				ReUpdate();
 			}
 		}
@@ -207,7 +207,6 @@ namespace SkiaSharp.Unity.HB {
 				ReUpdate();
 			}
 		}
-		
 		public virtual bool RenderLinks {
 			get {
 				return renderLinks;
@@ -361,8 +360,10 @@ namespace SkiaSharp.Unity.HB {
 			styleBoldItalic.TextColor = new SKColor(ColorToUint(fontColor));
 			styleBoldItalic.HaloWidth = outlineWidth;
 			styleBoldItalic.ShadowWidth = shadowWidth;
-			styleBoldItalic.HaloColor = outlineWidth > 0 ? new SKColor(ColorToUint(outlineColor)) : SKColor.Empty;
-			styleBoldItalic.ShadowColor = shadowWidth > 0 ? new SKColor(ColorToUint(shadowColor)) : SKColor.Empty;
+			styleBoldItalic.HaloColor = outlineWidth > 0 ? outlineColor : new Gradient();
+			styleBoldItalic.ShadowGradientColor = shadowGradientColor != null && shadowGradientColor.colorKeys.Length > 0
+				? shadowGradientColor
+				: new Gradient();
 			styleBoldItalic.ShadowOffsetX = shadowOffsetX;
 			styleBoldItalic.ShadowOffsetY = shadowOffsetY;
 			styleBoldItalic.InnerGlowWidth = innerGlowWidth;
@@ -570,8 +571,10 @@ namespace SkiaSharp.Unity.HB {
 			Underline = UnderlineStyle.Solid,
 			HaloWidth = outlineWidth,
 			ShadowWidth = shadowWidth,
-			HaloColor = outlineWidth > 0 ? new SKColor(ColorToUint(outlineColor)) : SKColor.Empty,
-			ShadowColor = shadowWidth > 0 ? new SKColor(ColorToUint(shadowColor)) : SKColor.Empty,
+			HaloColor = outlineWidth > 0 ? outlineColor : new Gradient(),
+			ShadowGradientColor = shadowGradientColor != null && shadowGradientColor.colorKeys.Length > 0
+				? shadowGradientColor
+				: new Gradient(),
 			InnerGlowColor = innerGlowWidth > 0 ? new SKColor(ColorToUint(innerGlowColor)) : SKColor.Empty,
 			InnerGlowWidth = innerGlowWidth,
 			FontItalic = italic,
@@ -637,8 +640,10 @@ namespace SkiaSharp.Unity.HB {
 			styleBoldItalic.ShadowWidth = shadowWidth;
 			styleBoldItalic.ShadowOffsetX = shadowOffsetX;
 			styleBoldItalic.ShadowOffsetY = shadowOffsetY;
-			styleBoldItalic.HaloColor = outlineWidth > 0 ? new SKColor(ColorToUint(outlineColor)) : SKColor.Empty;
-			styleBoldItalic.ShadowColor = shadowWidth > 0 ? new SKColor(ColorToUint(shadowColor)) : SKColor.Empty;
+			styleBoldItalic.HaloColor = outlineWidth > 0 ? outlineColor : new Gradient();
+			styleBoldItalic.ShadowGradientColor = shadowGradientColor != null && shadowGradientColor.colorKeys.Length > 0
+				? shadowGradientColor
+				: new Gradient();
 			styleBoldItalic.InnerGlowColor = innerGlowWidth > 0 ? new SKColor(ColorToUint(innerGlowColor)) : SKColor.Empty;
 			styleBoldItalic.InnerGlowWidth = innerGlowWidth;
 			styleBoldItalic.FontItalic = italic;
