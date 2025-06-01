@@ -40,7 +40,7 @@ public class LinuxLoadResolverWindow : EditorWindow {
       return IntPtr.Zero;
     }
 
-    string libraryPath = Path.Combine(packagePath, "Library", "linux", "linux-x64", "native", "libHarfBuzzSharp.so");
+    string libraryPath = Path.Combine(packagePath, "Library", "linux-x64", "native", "libHarfBuzzSharp.so");
 
     if (File.Exists(libraryPath)) {
       return HarfBuzzSharp.LibraryLoader.LoadLibrary(libraryPath);
